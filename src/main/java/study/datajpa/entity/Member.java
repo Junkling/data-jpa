@@ -11,7 +11,7 @@ import lombok.*;
 @NamedQuery(name = "Member.findAllByName",
         query = "select m from Member m where m.name = :name")
 //장점 : 파싱 시점에 쿼리문의 문법 오류를 확인해 줌
-
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

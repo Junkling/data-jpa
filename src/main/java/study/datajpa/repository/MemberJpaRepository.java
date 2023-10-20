@@ -42,4 +42,24 @@ public class MemberJpaRepository {
     public List<Member> findByUserNameAndAgeGreaterThen(String name, Integer age) {
         return entityManager.createQuery("select m from Member m where m.name = :name and m.age> :age").setParameter("name", name).setParameter("age", age).getResultList();
     }
+
+    public List<Member> findByPage(int age, int offset, int limit) {
+        return entityManager.createQuery("select m from Member m where m.age = :age order by m.name desc")
+                .setParameter("age", age)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+    public long totalCount(int age) {
+        return entityManager.createQuery("select count(m) from Member m where m.age = :age",Long.class)
+                .setParameter("age", age)
+                .getSingleResult();
+    }
+
+    public int bulkAgePlus(int age) {
+        return entityManager.createQuery("update Member m set m.age = m.age+1 where m.age >= :age")
+                .setParameter("age", age)
+                .executeUpdate();
+    }
+
 }
