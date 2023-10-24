@@ -12,7 +12,7 @@ import lombok.*;
         query = "select m from Member m where m.name = :name")
 //장점 : 파싱 시점에 쿼리문의 문법 오류를 확인해 줌
 @NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "member_id")

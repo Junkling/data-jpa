@@ -13,7 +13,7 @@ import study.datajpa.entity.Member;
 
 import java.util.List;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     List<Member> findByNameAndAgeGreaterThan(String name, int age);
 
     @Query(name = "Member.findAllByName")
@@ -52,7 +52,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = {"team"})
     List<Member> findAll();
 
+//    @Override
 //    @EntityGraph(attributePaths = {"team"})
+//    Page<Member> findAll(Pageable pageable);
+
+    //        @EntityGraph(attributePaths = {"team"})
     @EntityGraph("Member.all")
     List<Member> findEntityGraphByName(@Param("name") String name);
 
