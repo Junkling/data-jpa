@@ -4,10 +4,8 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
@@ -66,4 +64,14 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByName(String name);
 
+
+    List<UserNameOnlyDto> findProjectionsByName(@Param("name") String name);
+
+    <T> List<T> findProjections2ByName(@Param("name") String name, Class<T> type);
+
+    @Query(value = "select * from member where name = ?", nativeQuery = true)
+    Member findByNativeQuery(String name);
+
+    @Query(value = "select m.member_id as id, m.name, t.name as teamName from member m left join team t",countQuery = "select count(*) from member", nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }
